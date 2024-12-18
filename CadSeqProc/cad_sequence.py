@@ -1740,39 +1740,8 @@ class CADSequence(object):
             sketch.draw(ax, colors[i])
             self.all_sketch_figure.append([fig, ax])
 
-            # plt.tight_layout()
-            # plt.savefig(
-            #     f"/home/mokhan/Codes/CADLGen/output/check_{i}.png", bbox_inches="tight"
-            # )
+           
 
         return self
 
 
-if __name__ == "__main__":
-    json_dir = "/netscratch/mokhan/datasets/DeepCAD/original/data/cad_json"
-    all_json = get_files_scan(json_dir, 8)
-
-    simple_json = [
-        "00770030.json",
-        "00771451.json",
-        "00774751.json",
-        "00778906.json",
-        "00779782.json",
-    ]
-
-    complex_json = [
-        "00779198.json",
-        "00779330.json",
-        "00779342.json",
-        "00779251.json",
-        "00774205.json",
-        "00000070.json",  # S-Shaped Curve
-    ]
-
-    i = 0
-    with open(json_dir + "/0077/" + simple_json[i], "r") as f:
-        json_data = json.load(f)
-
-    cad_data = CADSequence.json_to_NormalizedCAD(json_data, bit=8)
-    cad_data, cad_vec, flag_vec, index_vec = CADSequence.json_to_vec(json_data, bit=8)
-    print(cad_data.denumericalize(8)._json())

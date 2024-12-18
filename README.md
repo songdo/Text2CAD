@@ -32,13 +32,13 @@ _*equal contributions_
 ## 📦 Dependencies
 
 ```bash
-conda env create --file environment.yml
+$ conda env create --file environment.yml
 ```
 
 # ✅ Todo List
 
 - [x] Release Data Preparation Code
-- [ ] Release Training Code
+- [x] Release Training Code
 - [ ] Release Inference Code
 
 # 📊 Data Preparation
@@ -48,13 +48,32 @@ Download the DeepCAD data from [here](https://github.com/ChrisWu1997/DeepCAD?tab
 - Generate Vector Representation from DeepCAD Json
 
 ```bash
-python3 json2vec.py --input_dir $DEEPCAD_JSON_DIR --split_json $TRAIN_TEST_VAL_JSON --output_dir $OUTPUT_DIR --bit 8 --max_cad_seq_len 272 --max_workers $NUM_WORKERS --padding --deduplicate
+$ python3 json2vec.py --input_dir $DEEPCAD_JSON_DIR --split_json $TRAIN_TEST_VAL_JSON --output_dir $OUTPUT_DIR --bit 8 --max_cad_seq_len 272 --max_workers $NUM_WORKERS --padding --deduplicate
 ```
+
+- Download the text annotations from [here](https://huggingface.co/datasets/SadilKhan/Text2CAD).
 
 # 🚀 Training
 
+In the `config/trainer.yaml`, provide the following path.
+
+- `cache_dir`: The directory to load model weights from Huggingface.
+- `cad_seq_dir`: The root directory that contains the ground truth CAD vector.
+- `prompt_path`: Path for the text annotation.
+- `split_filepath`: Json file containing the UIDs for train, test or validation.
+- `log_dir`: Directory for saving _logs, outputs, checkpoints_.
+- `checkpoint_path` (Optional): For resuming training after some epochs.
+
+```bash
+$ cd Cad_VLM
+$ python3 train.py --config_path config/trainer.yaml
+```
 
 # 🤖 Inference
+
+
+
+# 💻 Run Demo
 
 
 

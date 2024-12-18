@@ -92,15 +92,14 @@ def process_uid(uid, root_dir, output_dir):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument(
-        "--input_dir", type=str, default="/netscratch/mokhan/datasets/Text2CAD2"
+        "--input_dir", type=str
     )
     parser.add_argument(
         "--split_json",
         type=str,
-        default="/netscratch/mokhan/datasets/DeepCAD/original/data/sorted_train_test_validation.json",
     )
     parser.add_argument(
-        "--output_dir", type=str, default="/netscratch/mokhan/datasets/Text2CAD2"
+        "--output_dir", type=str
     )
     parser.add_argument("--max_workers", type=int, default=8)
     
