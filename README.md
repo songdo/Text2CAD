@@ -48,14 +48,14 @@ Download the DeepCAD data from [here](https://github.com/ChrisWu1997/DeepCAD?tab
 - Generate Vector Representation from DeepCAD Json
 
 ```bash
-$ python3 json2vec.py --input_dir $DEEPCAD_JSON_DIR --split_json $TRAIN_TEST_VAL_JSON --output_dir $OUTPUT_DIR --bit 8 --max_cad_seq_len 272 --max_workers $NUM_WORKERS --padding --deduplicate
+$  python3 -m CadSeqProc.json2vec --input_dir $DEEPCAD_JSON --split_json $TRAIN_TEST_VAL_JSON --output_dir $OUTPUT_DIR --max_workers $WORKERS --padding --deduplicate
 ```
 
 - Download the text annotations from [here](https://huggingface.co/datasets/SadilKhan/Text2CAD).
 
 # 🚀 Training
 
-In the `config/trainer.yaml`, provide the following path.
+In the `Cad_VLM/config/trainer.yaml`, provide the following path.
 
 - `cache_dir`: The directory to load model weights from Huggingface.
 - `cad_seq_dir`: The root directory that contains the ground truth CAD vector.

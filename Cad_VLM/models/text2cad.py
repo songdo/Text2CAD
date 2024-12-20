@@ -120,4 +120,8 @@ class Text2CAD(nn.Module):
             num_params = count_parameters(self, description)
             print(f"Number of Parameters: {num_params}")
         
-    
+    def get_trainable_state_dict(self):
+        # Get the state dict of the model which are trainable parameters
+        return {
+            k: v for k, v in self.state_dict().items() if "base_text_embedder" not in k.split(".")
+        }

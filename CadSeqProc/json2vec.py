@@ -86,10 +86,12 @@ def main():
         help="Add padding in the vector for same token length",
     )
     parser.add_argument("--deduplicate", action="store_true")
+    parser.add_argument("--verbose", action="store_true")
 
     args = parser.parse_args()
     # print(args)
-    clglogger.info(f"Running Task with {args.max_workers} workers.")
+    if args.verbose:
+        clglogger.info(f"Running Task with {args.max_workers} workers.")
 
     if args.dataset=="deepcad":
         process_deepcad(args, clglogger)
@@ -133,7 +135,8 @@ def process_deepcad(args, clglogger):
         for uid in data["train"][82000:84000]
     ]
 
-    clglogger.info(f"Preprocessing {len(extra_json_files)} using Method 2")
+    if args.verbose:
+        clglogger.info(f"Preprocessing {len(extra_json_files)} using Method 2")
     for json_path in tqdm(extra_json_files):
         try:
             process_json(json_path, args)
@@ -156,10 +159,11 @@ def process_all_jsons(all_json_files, args, clglogger):
     executor = ProcessPoolExecutor(max_workers=args.max_workers)
     duplicate_uid = []
 
-    clglogger.info(f"Found {len(all_json_files)} files.")
-    clglogger.info(f"Saving Sequence in {args.output_dir}")
-    if args.deduplicate:
-        clglogger.warning(f"Deduplicate is on. Some duplicate models won't be saved.")
+    if args.verbose:
+        clglogger.info(f"Found {len(all_json_files)} files.")
+        clglogger.info(f"Saving Sequence in {args.output_dir}")
+        if args.deduplicate:
+            clglogger.warning(f"Deduplicate is on. Some duplicate models won't be saved.")
 
     # NOTE: METHOD 1 - Run the following for faster data processing
     # If it fails, resume from the next iteration
@@ -170,7 +174,7 @@ def process_all_jsons(all_json_files, args, clglogger):
         for json_path in tqdm(all_json_files, desc="Submitting Tasks")
     ]
     unique_uid = dict()
-    for future in tqdm(as_completed(futures), desc="Processing Files"):
+    for future in tqdm(as_completed(futures), desc="Processing Files", total=len(futures)):
         val, uid, complexity = future.result()  # complexity is number of curves
         DUPLICATE_MODEL += val
         if val == 1:
@@ -192,10 +196,12 @@ def process_all_jsons(all_json_files, args, clglogger):
     # with open(f"sorted_uid_train_test_val.json", "w") as f:
     #     json.dump({args.subset: sorted_uid}, f)
 
-    clglogger.info(
-        f"Total Number of Invalid Models {DUPLICATE_MODEL} and percentage {DUPLICATE_MODEL/len(all_json_files)}"
-    )
-
+    if args.verbose:
+        clglogger.info(f"Total Number of Models {len(all_json_files)}")
+        clglogger.info(
+            f"Total Number of Invalid Models {DUPLICATE_MODEL} and percentage {DUPLICATE_MODEL/len(all_json_files)}"
+        )
+        clglogger.info(f"Total Number of Unique Models {len(unique_uid)}")
 
 
 @logger.catch()
@@ -264,15 +270,18 @@ def process_json(json_path, args):
             # print(output_dir)
             ensure_dir(output_dir)
             torch.save(cad_seq_dict, os.path.join(output_dir, name + ".pth"))
-            clglogger.success(f"Saved in {os.path.join(output_dir, name + '.pth')}")
+            if args.verbose:
+                clglogger.success(f"Saved in {os.path.join(output_dir, name + '.pth')}")
 
             return 0, uid, len(cad_obj.all_curves)
         else:
-            clglogger.warning(f"Skipping {json_path} because of duplication.")
+            if args.verbose:
+                clglogger.warning(f"Skipping {json_path} because of duplication.")
             return 1, uid, 0
     except Exception as e:
         # print(traceback.print_exc())
-        clglogger.error(f"Problem with json path {json_path} with error {e}")
+        if args.verbose:
+            clglogger.error(f"Problem with json path {json_path} with error {e}")
         return 1, uid, 0
 
 

@@ -178,7 +178,7 @@ class ExtrudeSequence(object):
         if self.metadata["extent_one"] == (2**bit) / 2 and self.metadata[
             "extent_two"
         ] == (2**bit / 2):
-            self.metadata["extent_one"] = 1 + ((2**bit) / 2)
+            self.metadata["extent_one"] = 1 + ((2**bit) // 2)
         if self.metadata["sketch_size"] == 0:
             self.metadata["sketch_size"] = 1
 

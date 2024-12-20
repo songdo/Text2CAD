@@ -357,20 +357,23 @@ def train_model(
                 checkpoint_only_model_file = os.path.join(
                     log_dir, f"t2c_{checkpoint_name}_{epoch}_model.pth"
                 )
-                torch.save(
-                    {
-                        "epoch": epoch,
-                        "model_state_dict": model.state_dict(),
-                        "step": step,
-                    },
-                    checkpoint_only_model_file,
-                )
+                # torch.save(
+                #     {
+                #         "epoch": epoch,
+                #         "model_state_dict": model.state_dict(),
+                #         "step": step,
+                #     },
+                #     checkpoint_only_model_file,
+                # )
 
                 # Save the model weights and optimizer states
+                # Only save trainable parameters
+
+
                 torch.save(
                     {
                         "epoch": epoch,
-                        "model_state_dict": model.state_dict(),
+                        "model_state_dict": model.get_trainable_state_dict(),
                         "optimizer_state_dict": optimizer.state_dict(),
                         "step": step,
                     },

@@ -9,8 +9,6 @@ from torch.nn.init import xavier_normal_, xavier_uniform_, constant_
 from torch.nn.parameter import Parameter
 import torch.nn as nn
 import torch
-from typing import Optional, Tuple
-from torch import Tensor
 
 
 # TODO: Replace the MultiHeadAttention layer with the code written for CADLGen (Adding Flash and Memory efficient Attention)
