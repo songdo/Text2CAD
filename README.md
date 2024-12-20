@@ -9,14 +9,17 @@ _*equal contributions_
 
 <h2> NeurIPS 2024 (Spotlight 🤩) </h2>
 
-<a href="https://openreview.net/pdf?id=5k9XeHIK3L">
-  <img src="https://img.shields.io/badge/Paper-3498db?style=for-the-badge&logoWidth=40&logoColor=white&labelColor=2c3e50&borderRadius=10" alt="Paper" />
+<a href="https://arxiv.org/abs/2409.17106">
+  <img src="https://img.shields.io/badge/Arxiv-3498db?style=for-the-badge&logoWidth=40&logoColor=white&labelColor=2c3e50&borderRadius=10" alt="Arxiv" />
 </a>
 <a href="https://sadilkhan.github.io/text2cad-project/">
   <img src="https://img.shields.io/badge/Project-2ecc71?style=for-the-badge&logoWidth=40&logoColor=white&labelColor=27ae60&borderRadius=10" alt="Project" />
 </a>
+<a href="https://huggingface.co/datasets/SadilKhan/Text2CAD">
+  <img src="https://img.shields.io/badge/Dataset-7D5BA6?style=for-the-badge&logoWidth=40&logoColor=white&labelColor=27ae60&borderRadius=10" alt="Dataset" />
+</a>
 
-<!-- <a href="link"><img src="https://img.shields.io/badge/Code-e74c3c?style=for-the-badge&logoWidth=40&logoColor=white" alt="Code" /></a> -->
+
 
 
 </div>
@@ -45,13 +48,17 @@ $ conda env create --file environment.yml
 
 Download the DeepCAD data from [here](https://github.com/ChrisWu1997/DeepCAD?tab=readme-ov-file#data).
 
-- Generate Vector Representation from DeepCAD Json
+**Generate Vector Representation from DeepCAD Json**
+
+_You can also download the processed cad vec from [here](https://huggingface.co/datasets/SadilKhan/Text2CAD/blob/main/cad_seq.zip)._
 
 ```bash
-$  python3 -m CadSeqProc.json2vec --input_dir $DEEPCAD_JSON --split_json $TRAIN_TEST_VAL_JSON --output_dir $OUTPUT_DIR --max_workers $WORKERS --padding --deduplicate
+$ cd CadSeqProc
+$  python3 json2vec.py --input_dir $DEEPCAD_JSON --split_json $TRAIN_TEST_VAL_JSON --output_dir $OUTPUT_DIR --max_workers $WORKERS --padding --deduplicate
 ```
 
-- Download the text annotations from [here](https://huggingface.co/datasets/SadilKhan/Text2CAD).
+
+**Download the text annotations from [here](https://huggingface.co/datasets/SadilKhan/Text2CAD).**
 
 # 🚀 Training
 
@@ -69,7 +76,7 @@ $ cd Cad_VLM
 $ python3 train.py --config_path config/trainer.yaml
 ```
 
-# 🤖 Inference
+ # 🤖 Inference
 
 
 
