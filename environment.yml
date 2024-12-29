@@ -35,3 +35,4 @@ dependencies:
         - pillow
         - accelerate
         - python-dotenv
+        - gradio

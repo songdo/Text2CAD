@@ -99,7 +99,7 @@ In the `Cad_VLM/config/inference.yaml`, provide the following path.
 - `prompt_path`: Path for the text annotation.
 - `split_filepath`: Json file containing the UIDs for train, test or validation.
 - `log_dir`: Directory for saving _logs, outputs, checkpoints_.
-- `checkpoint_path` (Optional): For resuming training after some epochs.
+- `checkpoint_path`: The path to model weights.
 
 </p>
 </details> 
@@ -130,7 +130,7 @@ In the `Cad_VLM/config/inference_user_input.yaml`, provide the following path.
 - `prompt_path`: Path for the text annotation.
 - `split_filepath`: Json file containing the UIDs for train, test or validation.
 - `log_dir`: Directory for saving _logs, outputs, checkpoints_.
-- `checkpoint_path` (Optional): For resuming training after some epochs.
+- `checkpoint_path`: The path to model weights.
 - `prompt_file` (Optional): For single prompt ignore it, for multiple prompts provide a txt file.
 
 </p>
