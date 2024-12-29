@@ -87,12 +87,13 @@ $ python3 train.py --config_path config/trainer.yaml
 
 # 🤖 Inference
 
-- For Test Dataset
+### For Test Dataset
 
 In the `Cad_VLM/config/inference.yaml`, provide the following path.
 
 <details><summary>Required Updates in yaml</summary>
 <p>
+
 - `cache_dir`: The directory to load model weights from Huggingface.
 - `cad_seq_dir`: The root directory that contains the ground truth CAD vector.
 - `prompt_path`: Path for the text annotation.
@@ -110,19 +111,20 @@ $ cd Cad_VLM
 $ python3 test.py --config_path config/inference.yaml
 ```
 
-- Run Evaluation
+### Run Evaluation
 
 ```bash
 $ cd Evaluation
 $ python3 eval_seq.py --input_path ./output.pkl --output_dir ./output
 ```
 
-- For Random Text Prompts
+### For Random Text Prompts
 
 In the `Cad_VLM/config/inference_user_input.yaml`, provide the following path.
 
 <details><summary>Required Updates in yaml</summary>
 <p>
+
 - `cache_dir`: The directory to load model weights from Huggingface.
 - `cad_seq_dir`: The root directory that contains the ground truth CAD vector.
 - `prompt_path`: Path for the text annotation.
@@ -135,14 +137,14 @@ In the `Cad_VLM/config/inference_user_input.yaml`, provide the following path.
 </details> 
 <br>
 
-  - For single prompt
+  #### For single prompt
   
   ```bash
   $ cd Cad_VLM
   $ python3 test_user_input.py --config_path config/inference.yaml --prompt "A rectangular prism with a hole in the middle."
   ```
 
-  - For Multiple prompts
+  #### For Multiple prompts
 
   ```bash
   $ cd Cad_VLM
