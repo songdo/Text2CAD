@@ -36,3 +36,4 @@ dependencies:
         - accelerate
         - python-dotenv
         - gradio
+        - open3d
