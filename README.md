@@ -42,7 +42,7 @@ $ conda env create --file environment.yml
 
 - [x] Release Data Preparation Code
 - [x] Release Training Code
-- [ ] Release Inference Code
+- [x] Release Inference Code
 
 # 📊 Data Preparation
 
@@ -64,6 +64,9 @@ $  python3 json2vec.py --input_dir $DEEPCAD_JSON --split_json $TRAIN_TEST_VAL_JS
 
 In the `Cad_VLM/config/trainer.yaml`, provide the following path.
 
+<details><summary>Required Updates in yaml</summary>
+<p>
+
 - `cache_dir`: The directory to load model weights from Huggingface.
 - `cad_seq_dir`: The root directory that contains the ground truth CAD vector.
 - `prompt_path`: Path for the text annotation.
@@ -71,16 +74,87 @@ In the `Cad_VLM/config/trainer.yaml`, provide the following path.
 - `log_dir`: Directory for saving _logs, outputs, checkpoints_.
 - `checkpoint_path` (Optional): For resuming training after some epochs.
 
+</p>
+</details> 
+
+<br>
+
 ```bash
 $ cd Cad_VLM
 $ python3 train.py --config_path config/trainer.yaml
 ```
 
- # 🤖 Inference
 
+# 🤖 Inference
 
+- For Test Dataset
+
+In the `Cad_VLM/config/inference.yaml`, provide the following path.
+
+<details><summary>Required Updates in yaml</summary>
+<p>
+- `cache_dir`: The directory to load model weights from Huggingface.
+- `cad_seq_dir`: The root directory that contains the ground truth CAD vector.
+- `prompt_path`: Path for the text annotation.
+- `split_filepath`: Json file containing the UIDs for train, test or validation.
+- `log_dir`: Directory for saving _logs, outputs, checkpoints_.
+- `checkpoint_path` (Optional): For resuming training after some epochs.
+
+</p>
+</details> 
+
+<br>
+
+```bash
+$ cd Cad_VLM
+$ python3 test.py --config_path config/inference.yaml
+```
+
+- Run Evaluation
+
+```bash
+$ cd Evaluation
+$ python3 eval_seq.py --input_path ./output.pkl --output_dir ./output
+```
+
+- For Random Text Prompts
+
+In the `Cad_VLM/config/inference_user_input.yaml`, provide the following path.
+
+<details><summary>Required Updates in yaml</summary>
+<p>
+- `cache_dir`: The directory to load model weights from Huggingface.
+- `cad_seq_dir`: The root directory that contains the ground truth CAD vector.
+- `prompt_path`: Path for the text annotation.
+- `split_filepath`: Json file containing the UIDs for train, test or validation.
+- `log_dir`: Directory for saving _logs, outputs, checkpoints_.
+- `checkpoint_path` (Optional): For resuming training after some epochs.
+- `prompt_file` (Optional): For single prompt ignore it, for multiple prompts provide a txt file.
+
+</p>
+</details> 
+<br>
+
+  - For single prompt
+  
+  ```bash
+  $ cd Cad_VLM
+  $ python3 test_user_input.py --config_path config/inference.yaml --prompt "A rectangular prism with a hole in the middle."
+  ```
+
+  - For Multiple prompts
+
+  ```bash
+  $ cd Cad_VLM
+  $ python3 test_user_input.py --config_path config/inference.yaml
+  ```
 
 # 💻 Run Demo
+
+```bash
+$ cd App
+$ gradio app.py
+```
 
 
 
@@ -98,6 +172,11 @@ Our project owes its success to the invaluable contributions of these remarkable
   <img src="https://scholar.google.de/citations/images/avatar_scholar_128.png" width="50" height="50" style="border-radius: 50%;">
 </a>
 
+<br>
+
+# ✍🏻 Acknowledgement
+
+We thank the authors of [DeepCAD](https://github.com/ChrisWu1997/DeepCAD) and [SkexGen](https://samxuxiang.github.io/skexgen/) and acknowledge the use of their code.
 
 # 📜 Citation
 

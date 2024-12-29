@@ -86,9 +86,9 @@ def main():
     for param in text2cad.base_text_embedder.parameters():
         param.requires_grad = False
 
-    text2cad = torch.nn.DataParallel(
-        text2cad
-    )  # For Parallel Processing (during Training)
+    # text2cad = torch.nn.DataParallel(
+    #     text2cad
+    # )  # For Parallel Processing (during Training)
 
     optimizer = optim.AdamW(text2cad.parameters(), lr=config["train"]["lr"])
     scheduler = ExponentialLR(optimizer, gamma=0.999)
@@ -206,6 +206,10 @@ def train_model(
 
     # Create the tensorboard summary writer
     writer = SummaryWriter(log_dir=tensorboard_dir, comment=f"{checkpoint_name}")
+    
+    model = torch.nn.DataParallel(
+        model
+    )  # For Parallel Processing (during Training)
 
     # ---------------------------------- Training ---------------------------------- #
     if start_epoch > config["train"]["curriculum_learning_epoch"]:
@@ -373,7 +377,7 @@ def train_model(
                 torch.save(
                     {
                         "epoch": epoch,
-                        "model_state_dict": model.get_trainable_state_dict(),
+                        "model_state_dict": model.module.get_trainable_state_dict(),
                         "optimizer_state_dict": optimizer.state_dict(),
                         "step": step,
                     },
