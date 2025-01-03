@@ -89,7 +89,7 @@ $ python3 train.py --config_path config/trainer.yaml
 
 ### For Test Dataset
 
-In the `Cad_VLM/config/inference.yaml`, provide the following path.
+In the `Cad_VLM/config/inference.yaml`, provide the following path. Download the checkpoint for v1.0 [here](https://huggingface.co/datasets/SadilKhan/Text2CAD/blob/main/text2cad_v1.0/Text2CAD_1.0.pth).
 
 <details><summary>Required Updates in yaml</summary>
 <p>
@@ -99,7 +99,7 @@ In the `Cad_VLM/config/inference.yaml`, provide the following path.
 - `prompt_path`: Path for the text annotation.
 - `split_filepath`: Json file containing the UIDs for train, test or validation.
 - `log_dir`: Directory for saving _logs, outputs, checkpoints_.
-- `checkpoint_path`: The path to model weights.
+- `checkpoint_path`: The path to model weights. 
 
 </p>
 </details> 

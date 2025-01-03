@@ -3,7 +3,6 @@ from torch.utils.data import Dataset, DataLoader
 import json
 import os
 import pandas as pd
-import random
 from tqdm import tqdm
 import re
 from concurrent.futures import ThreadPoolExecutor
@@ -24,7 +23,6 @@ class Text2CAD_Dataset(Dataset):
             prompt_path (string): Directory with all the .npz files.
             split_filepath (string): Train_Test_Val json file path.
             subset (string): "train", "test" or "val"
-            max_workers (int): Number of workers to use for loading the data.
         """
         super(Text2CAD_Dataset, self).__init__()
         self.cad_seq_dir = cad_seq_dir
@@ -42,11 +40,9 @@ class Text2CAD_Dataset(Dataset):
         with open(os.path.join(split_filepath), "r") as f:
             self.split = json.load(f)
 
-        self.uid_pair = self.split[subset][:100]
-        if subset != "test":
-            func = self._prepare_data
-        else:
-            func = self._prepare_data_test
+        self.uid_pair = self.split[subset]
+        func = self._prepare_data
+
         # Load the prompt data using ThreadPoolExecutor and _prepare_data function
         with ThreadPoolExecutor(max_workers=max_workers) as executor:
             # Create a dictionary to store the prompt data
@@ -66,8 +62,6 @@ class Text2CAD_Dataset(Dataset):
                                 val,
                                 mask_cad_dict,
                             )  # "0000/00001234" -> "0000/00001234_beginner"
-                    else:
-                        self.prompt_data[uid] = (cad_vec, prompt, mask_cad_dict)
 
         self.keys = list(self.prompt_data.keys())
         print(f"Found {len(self.prompt_data)} samples for {subset} split.")
@@ -76,31 +70,6 @@ class Text2CAD_Dataset(Dataset):
         return len(self.keys)
 
     def _prepare_data(self, uid):
-        root_id, chunk_id = uid.split("/")
-        if len(self.prompt_df[self.prompt_df["uid"] == uid]) == 0:
-            return None
-        cad_vec_dict = torch.load(
-            os.path.join(self.cad_seq_dir, root_id, chunk_id, "seq", f"{chunk_id}.pth"),
-            weights_only=True,
-        )
-        prompt = None
-        prompt_choices = set()
-        # Get a prompt that is not None or we have tried 4 times but still no valid prompt
-        while not isinstance(prompt, str) or len(prompt_choices) < 4:
-            prompt_choice = random.choice(
-                list(set(self.all_prompt_choices) - prompt_choices)
-            )
-            prompt_choices.add(prompt_choice)
-            prompt = self.prompt_df[self.prompt_df["uid"] == uid][prompt_choice].iloc[0]
-
-        if not isinstance(prompt, str):
-            return None
-
-        # Filter the prompt
-        prompt = self.remove_substrings(prompt, self.substrings_to_remove).lower()
-        return uid, cad_vec_dict["vec"], prompt, cad_vec_dict["mask_cad_dict"]
-
-    def _prepare_data_test(self, uid):
         root_id, chunk_id = uid.split("/")
         if len(self.prompt_df[self.prompt_df["uid"] == uid]) == 0:
             return None
