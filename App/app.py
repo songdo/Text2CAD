@@ -63,7 +63,7 @@ def parse_config_file(config_file):
 
 
 
-config_path = "/home/mokhan/Codes/Text2CAD/Cad_VLM/config/final/inference_user_input.yaml"
+config_path = "../config/final/inference_user_input.yaml"
 config = parse_config_file(config_path)
 device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
 model = load_model(config, device)
