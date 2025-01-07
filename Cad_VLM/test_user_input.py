@@ -180,15 +180,16 @@ def test_model(
         t2clogger.info(f"Found {num_texts} prompts in the prompt file.")
 
     model.eval()
+    batch_size=min(config["test"]["batch_size"], num_texts)
     with torch.no_grad():
         t2clogger.info("Generating CAD Sequence.")
-        for b in range(num_texts // config["test"]["batch_size"]):
+        for b in range(num_texts // batch_size):
             # Autoregressive Generation of CAD Sequences from Text Prompts
             pred_cad_seq_dict = model.test_decode(
                 texts=text[
                     b
-                    * config["test"]["batch_size"] : (b + 1)
-                    * config["test"]["batch_size"]
+                    * batch_size : (b + 1)
+                    * batch_size
                 ],
                 maxlen=MAX_CAD_SEQUENCE_LENGTH,
                 nucleus_prob=0,
@@ -200,12 +201,12 @@ def test_model(
                 len(
                     text[
                         b
-                        * config["test"]["batch_size"] : (b + 1)
-                        * config["test"]["batch_size"]
+                        * batch_size : (b + 1)
+                        * batch_size
                     ]
                 )
             ):
-                index = i + b * config["test"]["batch_size"]
+                index = i + b * batch_size
                 try:
                     CADSequence.from_vec(
                         pred_cad_seq_dict["cad_vec"][i].cpu().numpy(),

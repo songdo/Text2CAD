@@ -141,14 +141,14 @@ In the `Cad_VLM/config/inference_user_input.yaml`, provide the following path.
   
   ```bash
   $ cd Cad_VLM
-  $ python3 test_user_input.py --config_path config/inference.yaml --prompt "A rectangular prism with a hole in the middle."
+  $ python3 test_user_input.py --config_path config/inference_user_input.yaml --prompt "A rectangular prism with a hole in the middle."
   ```
 
   #### For Multiple prompts
 
   ```bash
   $ cd Cad_VLM
-  $ python3 test_user_input.py --config_path config/inference.yaml
+  $ python3 test_user_input.py --config_path config/inference_user_input.yaml
   ```
 
 # 💻 Run Demo
