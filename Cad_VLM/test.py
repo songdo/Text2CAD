@@ -217,7 +217,6 @@ def test_model(
                             gt_cad = (
                                 CADSequence.from_vec(
                                     vec_dict["cad_vec"][i].cpu().numpy(),
-                                    vec_type=VEC_TYPE,
                                     bit=N_BIT,
                                     post_processing=True,
                                 )
@@ -231,7 +230,6 @@ def test_model(
                             pred_cad = (
                                 CADSequence.from_vec(
                                     pred_cad_seq_dict["cad_vec"][i].cpu().numpy(),
-                                    vec_type=VEC_TYPE,
                                     bit=N_BIT,
                                     post_processing=True,
                                 )
