@@ -64,7 +64,7 @@ class TextAdaptiveLayer(nn.Module):
         mask_prompt_dict: dictionary with keys "attn_mask", "key_padding_mask"
         metadata: boolean. To save attention weights
         """
-
+            
         # self_attn_mask_dict = mask_cad_dict.copy()
 
         # ? <----------  TEXT EMBEDDING SELF-ATTENTION  ---------->

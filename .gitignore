@@ -165,3 +165,8 @@ cython_debug/
 **notebooks**
 **ipynb
 **.sh
+datasets/*
+logs/*
+models/*
+App/output/*
+App/.gradio/*

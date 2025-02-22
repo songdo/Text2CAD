@@ -9,13 +9,14 @@ text_encoder:
   # ----------------- Configuration for the Base Text Embedder ----------------- #
   text_embedder:
     # Name of the text encoder model
-    model_name: "bert_large_uncased"
+    model_name: "/data2/songyuan/models/AI-ModelScope/bert-large-uncased/AI-ModelScope/bert-large-uncase"
     # Maximum Text Sequence Length
     max_seq_len: 512
-    # Cache Directory
-    cache_dir: "YOUR DIR"
+    # Cache Directory，有啥作用
+    cache_dir: "/home/songyuan/disk/117/text2cad/Text2CAD/models/Text2CAD_1.0.pth"
 
   # ----------------- Configuration for the Adaptive Layer ----------------- #
+  # MLP
   adaptive_layer:
     # Input dimension of the text encoder (1024 for bert, else 4096)
     in_dim: 1024 
@@ -43,12 +44,12 @@ cad_decoder:
 
 # --------------- Configuration related to training dataloader --------------- #
 train_data:
-  # Root directory of the training data
-  cad_seq_dir: "YOUR DIR"
-  # Path to the CSV file containing the text prompts
-  prompt_path: "YOUR PATH"
+  # Root directory of the training data；3D模型特征向量
+  cad_seq_dir: "/home/songyuan/disk/117/text2cad/Text2CAD/datasets/cad_seq/cad_seq_test"
+  # Path to the CSV file containing the text prompts；prompt+command sequence，提示词+cad构建指令序列
+  prompt_path: "/home/songyuan/disk/117/text2cad/Text2CAD/datasets/text2cad_v1.0.csv"
   # JSON file containing information about train, test, and validation splits
-  split_filepath: "YOUR PATH"
+  split_filepath: "/home/songyuan/disk/117/text2cad/Text2CAD/datasets/train_test_val.json"
   # Maximum sequence length for input data
   max_seq_len: 512
 
@@ -65,12 +66,12 @@ train:
   # Prefetch factor for the DataLoader during training
   prefetch_factor: 10
   # Directory for logging training information
-  log_dir: "YOUR DIR"
+  log_dir: "/home/songyuan/disk/117/text2cad/Text2CAD/logs/"
   # Path to saved model checkpoint for Resuming Training (optional)
   checkpoint_path:  # Set to None if no checkpoint is available
   # Checkpoint interval
   checkpoint_interval: 10
-  # Curriculum learning epoch (set to 0 for no curriculum learning)
+  # Curriculum learning epoch (set to 0 for no curriculum learning)；课程学习算法：https://zhuanlan.zhihu.com/p/362351969
   curriculum_learning_epoch: 0
   
 

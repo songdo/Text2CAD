@@ -21,6 +21,8 @@ class Text2CAD(nn.Module):
         super().__init__()
         
         # Base Text Embedder
+        print(text_config['text_embedder'], '9'*10)
+        # {'model_name': '/data2/songyuan/models/AI-ModelScope/bert-large-uncased/AI-ModelScope/bert-large-uncased', 'max_seq_len': 512, 'cache_dir': '/home/songyuan/disk/117/text2cad/Text2CAD/models/Text2CAD_1.0.pth'}
         self.base_text_embedder = TextEmbedder.from_config(text_config['text_embedder'])
         # Adaptive Layer to fine tune text embeddings
         self.adaptive_layer = TextAdaptiveLayer.from_config(text_config['adaptive_layer'])
@@ -40,7 +42,7 @@ class Text2CAD(nn.Module):
                         device='cuda' if torch .cuda.is_available() else 'cpu'
                         ):
         """
-        Auto-regressively decode CAD sequence from text prompts
+        Auto-regressively decode CAD sequence from text prompts；生成构建序列
         Args:
         - texts: list of text prompts
         - maxlen: maximum length of the generated CAD sequence
@@ -82,12 +84,12 @@ class Text2CAD(nn.Module):
         metadata: bool to return attention scores
         """
         # ------------ Get the initial text embeddings ------------ #
-        
         T, key_padding_mask = self.base_text_embedder.get_embedding(texts)
         ca_mask={"attn_mask": prepare_cross_attention_mask_batch(key_padding_mask, cad_seq_len=self.cad_seq_len), 
                  "key_padding_mask": key_padding_mask}
         
         # ------------ Pass the text embedding through the adaptive layer ------------ #
+        # 原始的text embedding需要adapter转换一下
         T, text_attn_scores = self.adaptive_layer(
             T,
             {
@@ -100,12 +102,13 @@ class Text2CAD(nn.Module):
             self.attention_scores.update(text_attn_scores)
 
         # ------------ Pass the text embedding through the CAD Decoder as context ------------ #
+        # CAD解码器对text embedding进行解码，生成构建序列
         S_output, cad_attn_scores = self.cad_decoder(
             vec_dict, T, mask_cad_dict, ca_mask, metadata
         )
         if cad_attn_scores is not None:
             self.attention_scores.update(cad_attn_scores)
-
+        
         if metadata:
             return S_output, self.attention_scores
         else:

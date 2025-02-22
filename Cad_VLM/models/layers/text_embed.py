@@ -3,7 +3,7 @@ import torch
 from transformers import BertTokenizer, BertModel
 
 
-MODEL_NAME_DICT={"bert_large_uncased":"google-bert/bert-large-uncased"}
+MODEL_NAME_DICT={"bert_large_uncased":"/data2/songyuan/models/AI-ModelScope/bert-large-uncased/AI-ModelScope/bert-large-uncased"}
 
 def prepare_cross_attention_mask_batch(mask, cad_seq_len=271):
     if mask.shape[0] > 1:
@@ -23,7 +23,10 @@ class TextEmbedder(nn.Module):
         
         device = "cuda" if torch.cuda.is_available() else "cpu"
         self.max_seq_len = max_seq_len
-        self.model_name = MODEL_NAME_DICT.get(model_name, "bert_large_uncased")
+        print(MODEL_NAME_DICT, model_name, '8'*10)
+        # self.model_name = MODEL_NAME_DICT.get(model_name, "bert_large_uncased")
+        self.model_name = "/data2/songyuan/models/AI-ModelScope/bert-large-uncased/AI-ModelScope/bert-large-uncased"
+        print(self.model_name,'7'*10)
         self.tokenizer = BertTokenizer.from_pretrained(self.model_name, cache_dir=cache_dir)
         self.model = BertModel.from_pretrained(
                 self.model_name, cache_dir=cache_dir, max_position_embeddings=max_seq_len

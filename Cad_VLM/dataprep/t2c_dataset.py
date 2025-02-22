@@ -73,6 +73,7 @@ class Text2CAD_Dataset(Dataset):
         root_id, chunk_id = uid.split("/")
         if len(self.prompt_df[self.prompt_df["uid"] == uid]) == 0:
             return None
+        # 用.pth torch.save保存的向量数据
         cad_vec_dict = torch.load(
             os.path.join(self.cad_seq_dir, root_id, chunk_id, "seq", f"{chunk_id}.pth"),
             weights_only=True,

@@ -193,8 +193,10 @@ class CADSequence(object):
                 )
 
         # Removing the start and end token
+        print("cad_vec: ", cad_vec)
         cad_vec = split_array(cad_vec, END_TOKEN.index("START"))[1]
 
+        # 怎么解码为command sequence的
         # Splitting the cad seq tokens into number of sketch and extrusion tokens
         skt_ext_seq = split_array(
             cad_vec, END_TOKEN.index("END_EXTRUSION"), False, False
@@ -955,6 +957,7 @@ class CADSequence(object):
         if self.cad_model is None:
             self.create_cad_model()
 
+        # 生成mesh
         self.mesh = brep2mesh(
             self.cad_model,
             mode=mode,

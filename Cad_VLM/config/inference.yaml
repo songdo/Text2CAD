@@ -3,11 +3,12 @@ text_encoder:
   # ----------------- Configuration for the Base Text Embedder ----------------- #
   text_embedder:
     # Name of the text encoder model
-    model_name: "bert_large_uncased"
+    model_name: "/data2/songyuan/models/AI-ModelScope/bert-large-uncased/AI-ModelScope/bert-large-uncased"
+    model_name: "/data2/songyuan/models/AI-ModelScope/bert-large-uncased/AI-ModelScope/bert-large-uncased"
     # Maximum Text Sequence Length
     max_seq_len: 512
     # Cache Directory
-    cache_dir: "YOUR DIR"
+    cache_dir: "/home/songyuan/disk/117/text2cad/Text2CAD/models/Text2CAD_1.0.pth"
 
   # ----------------- Configuration for the Adaptive Layer ----------------- #
   adaptive_layer:
@@ -38,11 +39,11 @@ cad_decoder:
 # --------------- Configuration related to training dataloader --------------- #
 test_data:
   # Root directory of the training data
-  cad_seq_dir: "YOUR DIR"
+  cad_seq_dir: "/home/songyuan/disk/117/text2cad/Text2CAD/datasets/cad_seq/cad_seq"
   # Path to the CSV file containing the text prompts
-  prompt_path: "YOUR PATH"
+  prompt_path: "/home/songyuan/disk/117/text2cad/Text2CAD/datasets/text2cad_v1.0.csv"
   # JSON file containing information about train, test, and validation splits
-  split_filepath: "YOUR PATH"
+  split_filepath: "/home/songyuan/disk/117/text2cad/Text2CAD/datasets/train_test_val.json"
   # Maximum sequence length for input data
   max_seq_len: 512
 
@@ -55,9 +56,9 @@ test:
   # Prefetch factor for the DataLoader during training
   prefetch_factor: 10
   # Directory for logging training information
-  log_dir: "YOUR DIR"
+  log_dir: "./log/"
   # Path to saved model checkpoint (optional)
-  checkpoint_path: "YOUR CHECKPOINT PATH"
+  checkpoint_path: "/models/"
   nucleus_prob: 0
   sampling_type: "max"
 

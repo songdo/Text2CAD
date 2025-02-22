@@ -65,7 +65,7 @@ def main():
         "-c",
         "--config_path",
         type=str,
-        default="config/trainer.yaml",
+        default="/home/songyuan/disk/117/text2cad/Text2CAD/Cad_VLM/config/trainer.yaml",
     )
     args = parser.parse_args()
     config = parse_config_file(args.config_path)
@@ -76,22 +76,25 @@ def main():
     )
 
     # -------------------------------- Load Model -------------------------------- #
+    # text2cad做为整体模型进行训练，但是embedding部分被冷冻了
     cad_config = config["cad_decoder"]
     cad_config["cad_seq_len"] = MAX_CAD_SEQUENCE_LENGTH
     text2cad = Text2CAD(text_config=config["text_encoder"], cad_config=cad_config).to(
         device
     )
 
-    # Freeze the base text embedder
+    # Freeze the base text embedder；parameters()保存的是Weights和Bais参数的值。
     for param in text2cad.base_text_embedder.parameters():
         param.requires_grad = False
 
     # text2cad = torch.nn.DataParallel(
     #     text2cad
     # )  # For Parallel Processing (during Training)
-
+    # 优化器：决定更新权重的数值
     optimizer = optim.AdamW(text2cad.parameters(), lr=config["train"]["lr"])
+    # 学习率衰减：Decays the learning rate of each parameter group by gamma every epoch.
     scheduler = ExponentialLR(optimizer, gamma=0.999)
+    # 损失函数
     criterion = CELoss(device=device)
 
     lr = config["train"]["lr"]
@@ -206,7 +209,7 @@ def train_model(
 
     # Create the tensorboard summary writer
     writer = SummaryWriter(log_dir=tensorboard_dir, comment=f"{checkpoint_name}")
-    
+    # 数据并行，梯度最后要合并
     model = torch.nn.DataParallel(
         model
     )  # For Parallel Processing (during Training)
@@ -224,7 +227,7 @@ def train_model(
     for epoch in range(start_epoch, num_epochs + 1):
         # ------------------------------- Single Epoch ------------------------------- #
         # Shuffle the data when curriculum learning stops
-        if epoch == config["train"]["curriculum_learning_epoch"]:
+        if epoch == config["train"]["curriculum_learning_epoch"]: # https://zhuanlan.zhihu.com/p/362351969
             t2clogger.info("MIXED LEARNING...")
             optimizer = optim.AdamW(model.parameters(), lr=config["train"]["lr"])
             scheduler = ExponentialLR(optimizer, gamma=0.99)
@@ -244,7 +247,7 @@ def train_model(
             ascii=True,
             desc=f"\033[94mText2CAD\033[0m: Epoch [{epoch}/{num_epochs+1}]✨",
         ) as pbar:
-            for _, vec_dict, prompt, mask_cad_dict in pbar:
+            for _, vec_dict, prompt, mask_cad_dict in pbar: # 训练样本：3d向量、prompt、
                 step += 1
 
                 for key, value in vec_dict.items():
