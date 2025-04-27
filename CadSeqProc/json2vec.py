@@ -286,4 +286,10 @@ def process_json(json_path, args):
 
 
 if __name__ == "__main__":
+    '''
+    python json2vec.py --dataset fusion360 --input_dir /Users/songyuan/Documents/projects/lab/zhipu/project1/fusion360/r1.0.1/reconstruction --output_dir /home/abhinav/Downloads/Text2CAD/data/fusion360/ --bit 8 --padding 0 --deduplicate --verbose
+    
+    '''
+
+
     main()
